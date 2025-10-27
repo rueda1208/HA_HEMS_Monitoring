@@ -4,10 +4,11 @@ slug: "telegraf_configurable"
 version: "1.0.0"
 init: false
 arch:
-  - amd64
-  - armv7
-  - arm64
   - aarch64
+  - amd64
+  - arm64
+  - armv7
+  - i386
 boot: auto
 startup: services
 host_network: false
