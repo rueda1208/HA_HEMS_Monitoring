@@ -21,8 +21,7 @@ RUN go build -o telegraf ./cmd/telegraf && strip telegraf
 
 
 # -------- Stage 2: Runtime image --------
-ARG BUILD_FROM=ghcr.io/home-assistant/amd64-base:3.19
-FROM ${BUILD_FROM}
+FROM ghcr.io/home-assistant/amd64-base:3.19
 
 # Install runtime dependencies
 RUN apk add --no-cache jq gettext
