@@ -1,6 +1,6 @@
-name: Configurable Telegraf
-description: Telegraf add-on with modular configuration
-slug: telegraf_configurable
+name: "Telegraf"
+description: "Telegraf add-on with modular configuration"
+slug: "telegraf_configurable"
 version: "1.0.0"
 init: false
 arch:
