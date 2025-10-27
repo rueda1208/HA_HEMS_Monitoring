@@ -21,8 +21,7 @@ RUN go build -o telegraf ./cmd/telegraf && strip telegraf
 
 
 # -------- Stage 2: Runtime image --------
-ARG BUILD_FROM
-FROM $BUILD_FROM
+FROM alpine:3.17
 
 # Install runtime dependencies
 RUN apk add --no-cache jq gettext
