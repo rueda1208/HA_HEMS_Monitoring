@@ -11,7 +11,6 @@ boot: auto
 startup: services
 host_network: true
 homeassistant_api: true
-
 options:
   agent: |
     [agent]
@@ -47,7 +46,6 @@ options:
 
   processor_plugins: |
     # [[processors.custom_processor_name]]
-
 schema:
   agent: str
   output_plugins: str
