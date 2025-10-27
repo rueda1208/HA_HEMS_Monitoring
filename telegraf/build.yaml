@@ -1,12 +1,5 @@
 build_from:
-  aarch64: "arm64v8/python:3.11.0-slim-bullseye"
-  amd64: "amd64/python:3.11.0-slim-bullseye"
-  armv7: "arm32v7/python:3.11.0-slim-bullseye"
-  i386: "i386/python:3.11.0-slim-bullseye"
-labels:
-  org.opencontainers.image.title: "HEMS Monitoring Add-on"
-  org.opencontainers.image.description: "Example add-on to use as a blueprint for new add-ons."
-  org.opencontainers.image.source: "https://github.com/home-assistant/addons-example"
-  org.opencontainers.image.licenses: "Apache License 2.0"
-args:
-  TEMPIO_VERSION: "2021.09.0"
+  aarch64: "arm64v8/ghcr.io/home-assistant/amd64-base:3.19"
+  amd64: "amd64/ghcr.io/home-assistant/amd64-base:3.19"
+  armv7: "arm32v7/ghcr.io/home-assistant/amd64-base:3.19"
+  i386: "i386/ghcr.io/home-assistant/amd64-base:3.19"
