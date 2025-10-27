@@ -12,3 +12,43 @@ boot: auto
 startup: services
 host_network: false
 homeassistant_api: true
+options:
+  agent: |
+    [agent]
+      interval = "10s"
+      round_interval = true
+      metric_batch_size = 1000
+      metric_buffer_limit = 10000
+      collection_jitter = "0s"
+      flush_interval = "10s"
+      flush_jitter = "0s"
+      precision = "0s"
+      hostname = ""
+      omit_hostname = false
+
+  output_plugins: |
+    [[outputs.postgresql]]
+    connection = "host=77b2833f-timescaledb user=postgres password=homeassistant sslmode=disable dbname=homeassistant"
+
+    # [[outputs.influxdb_v2]]
+    #   urls = ["http://influxdb:8086"]
+    #   token = "my-token"
+    #   organization = "my-org"
+    #   bucket = "my-bucket"
+
+  input_plugins: |
+    [[inputs.cpu]]
+      percpu = true
+      totalcpu = true
+
+    [[inputs.mem]]
+
+    [[inputs.system]]
+
+  processor_plugins: |
+    # [[processors.custom_processor_name]]
+schema:
+  agent: str
+  output_plugins: str
+  input_plugins: str
+  processor_plugins: str
