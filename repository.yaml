@@ -1,4 +1,4 @@
 # https://developers.home-assistant.io/docs/add-ons/repository#repository-configuration
 name: Configurable Telegraf
 url: 'https://github.com/rueda1208/HA_HEMS_Monitoring'
-maintainer: Luis RUeda <luisfruedav@gmail.com>
+maintainer: Luis Rueda <luisfruedav@gmail.com>
