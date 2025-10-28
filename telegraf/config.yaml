@@ -1,7 +1,7 @@
 name: "Telegraf"
 slug: "telegraf_configurable"
 description: "Telegraf add-on with modular configuration"
-image: "hems/hassio-addons/telegraf"
+image: "telegraf"
 version: "1.0.0"
 arch:
   - aarch64
