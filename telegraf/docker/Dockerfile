@@ -17,7 +17,7 @@ RUN git clone --branch v1.31.2 --depth=1 https://github.com/influxdata/telegraf.
 
 # Build Telegraf with your custom plugins
 WORKDIR /go/src/telegraf
-RUN go build -o telegraf ./cmd/telegraf && strip telegraf
+RUN go build -o telegraf ./cmd/telegraf
 
 
 # -------- Stage 2: Runtime image --------

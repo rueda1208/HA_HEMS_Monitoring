@@ -1,7 +1,7 @@
 name: "Telegraf"
 slug: "telegraf_configurable"
 description: "Telegraf add-on with modular configuration"
-image: "telegraf"
+image: "rueda1208/workspace-telegraf:1.0.0"
 version: "1.0.0"
 arch:
   - aarch64
@@ -29,13 +29,7 @@ options:
 
   output_plugins: |
     [[outputs.postgresql]]
-    connection = "host=77b2833f-timescaledb user=postgres password=homeassistant sslmode=disable dbname=homeassistant"
-
-    # [[outputs.influxdb_v2]]
-    #   urls = ["http://influxdb:8086"]
-    #   token = "my-token"
-    #   organization = "my-org"
-    #   bucket = "my-bucket"
+      connection = "host=77b2833f-timescaledb user=postgres password=homeassistant sslmode=disable dbname=homeassistant"
 
   input_plugins: |
     [[inputs.cpu]]
