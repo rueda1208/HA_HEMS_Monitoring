@@ -17,7 +17,6 @@ options:
   POSTGRES_USER: homeassistant
   POSTGRES_PASSWORD: secret
   POSTGRES_DB: homeassistant
-  expose_port: false
 schema:
   POSTGRES_USER: str
   POSTGRES_PASSWORD: str

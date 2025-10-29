@@ -5,6 +5,11 @@ ENV LANG=C.UTF-8
 COPY run.sh /run.sh
 RUN chmod a+x /run.sh
 
+# Ensure data directory exists and is writable
+RUN mkdir -p /data/postgresql && chmod -R 777 /data
+
+# Run as root
+USER root
 
 # Use the official entrypoint
 ENTRYPOINT ["/run.sh"]
