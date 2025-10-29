@@ -13,7 +13,7 @@ boot: auto
 init: false
 startup: services
 host_network: false
-ptions:
+options:
   POSTGRES_USER: homeassistant
   POSTGRES_PASSWORD: secret
   POSTGRES_DB: homeassistant
