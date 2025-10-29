@@ -13,8 +13,8 @@ RUN apt-get update && apt-get install -y \
 
 # Copy init scripts
 COPY run.sh /run.sh
-COPY init.sql /docker-entrypoint-initdb.d/init.sql
 RUN chmod a+x /run.sh
+
 
 # Use the official entrypoint
 ENTRYPOINT ["/run.sh"]
