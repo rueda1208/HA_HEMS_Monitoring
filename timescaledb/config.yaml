@@ -21,7 +21,6 @@ schema:
   POSTGRES_USER: str
   POSTGRES_PASSWORD: str
   POSTGRES_DB: str
-  expose_port: bool
 ports:
   5432/tcp: null
 map:
