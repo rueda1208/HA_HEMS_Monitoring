@@ -20,7 +20,7 @@ cd "$PROJECT_ROOT"
 #   ./build.sh multi    → build multi-architecture and push
 BUILD_TYPE="${1:-normal}"
 
-IMAGE_NAME="rueda1208/workspace-telegraf"
+IMAGE_NAME="rueda1208/telegraf"
 VERSION="1.0.0"
 
 if [ "$BUILD_TYPE" = "multi" ]; then

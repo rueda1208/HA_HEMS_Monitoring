@@ -2,7 +2,7 @@
 name: "TimescaleDB"
 slug: "timescaledb"
 description: "TimescaleDB - PostgreSQL with time-series capabilities for Home Assistant"
-image: "rueda1208/workspace-timescaledb:1.0.0"
+image: "rueda1208/timescaledb:1.0.0"
 version: "1.0.0"
 arch:
   - aarch64

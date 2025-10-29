@@ -1,7 +1,7 @@
 name: "Telegraf"
 slug: "telegraf_configurable"
 description: "Telegraf add-on with modular configuration"
-image: "rueda1208/workspace-telegraf:1.0.0"
+image: "rueda1208/telegraf:1.0.0"
 version: "1.0.0"
 arch:
   - aarch64
