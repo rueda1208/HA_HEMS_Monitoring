@@ -13,15 +13,16 @@ boot: auto
 init: false
 startup: services
 host_network: false
+ptions:
+  POSTGRES_USER: homeassistant
+  POSTGRES_PASSWORD: secret
+  POSTGRES_DB: homeassistant
+  expose_port: false
 schema:
   POSTGRES_USER: str
   POSTGRES_PASSWORD: str
   POSTGRES_DB: str
-  expose_port: boo
-options:
-  POSTGRES_USER: homeassistant,
-  POSTGRES_PASSWORD: adminadmin,
-  POSTGRES_DB: homeassistant,
+  expose_port: bool
 ports:
   5432/tcp: null
 map:
