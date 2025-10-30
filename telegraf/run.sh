@@ -66,28 +66,23 @@ EOF
 fi
 
 
-# # --- 4. APPEND CUSTOM PLUGIN CONFIG FROM VOLUME ---
+# --- 4. OVERWRITE CUSTOM PLUGIN CONFIG FILE IN VOLUME ---
 
-# PLUGIN_CONFIG_FILE=$(bashio::config 'plugin_config_file')
-# PLUGIN_CONFIG_PATH="/share/${PLUGIN_CONFIG_FILE}"
+PLUGIN_CONFIG_FILE=$(bashio::config 'plugin_config_file')
+PLUGIN_CONFIG_PATH="/share/${PLUGIN_CONFIG_FILE}"
 
-# bashio::log.info "Checking for custom plugins file at: ${PLUGIN_CONFIG_PATH}"
+bashio::log.info "Preparing to overwrite custom plugin file at: ${PLUGIN_CONFIG_PATH}"
 
-# if bashio::fs.file_exists "${PLUGIN_CONFIG_PATH}"; then
-#     bashio::log.info "Custom plugin configuration found. Appending to main config."
-#     # Add a separator and append the contents of the user-provided file
-#     cat >> "${CONFIG_FILE}" << EOF
+if bashio::fs.file_exists "${PLUGIN_CONFIG_PATH}"; then
+    bashio::log.info "Existing custom plugin file found. It will be overwritten with the main config."
+else
+    bashio::log.info "No existing custom plugin file found. A new one will be created."
+fi
 
-# # ----------------------------------
-# # Custom Plugins (Inputs/Processors)
-# # Loaded from /share/${PLUGIN_CONFIG_FILE}
-# # ----------------------------------
+# Overwrite the file in the volume with the main config
+cat "${CONFIG_FILE}" > "${PLUGIN_CONFIG_PATH}"
 
-# EOF
-#     cat "${PLUGIN_CONFIG_PATH}" >> "${CONFIG_FILE}"
-# else
-#     bashio::log.warn "No custom plugin file found at ${PLUGIN_CONFIG_PATH}. Running with only UI configuration."
-# fi
+bashio::log.info "Custom plugin file successfully overwritten at ${PLUGIN_CONFIG_PATH}"
 
 # --- 4. START TELEGRAF ---
 bashio::log.info "Generated Telegraf config saved to ${CONFIG_FILE}. Starting Telegraf..."
