@@ -1,7 +1,7 @@
 name: "Telegraf"
 slug: "telegraf_configurable"
 description: "Telegraf add-on with modular configuration"
-image: "rueda1208/telegraf"
+image: "telegraf"
 version: "1.0.0"
 arch:
   - aarch64
@@ -26,11 +26,9 @@ options:
       precision = "0s"
       hostname = ""
       omit_hostname = false
-
   output_plugins: |
     [[outputs.postgresql]]
       connection = "host=77b2833f-timescaledb user=postgres password=homeassistant sslmode=disable dbname=homeassistant"
-
   input_plugins: |
     [[inputs.cpu]]
       percpu = true
@@ -39,11 +37,12 @@ options:
     [[inputs.mem]]
 
     [[inputs.system]]
-
   processor_plugins: |
     # [[processors.custom_processor_name]]
+  plugin_config_file: "telegraf.conf"
 schema:
   agent: str
   output_plugins: str
   input_plugins: str
   processor_plugins: str
+  plugin_config_file: str
