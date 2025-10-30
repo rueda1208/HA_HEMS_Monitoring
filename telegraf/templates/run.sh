@@ -1,5 +1,5 @@
-#!/usr/bin/env bash
-set -euo pipefail
+#!/bin/sh
+set -e
 
 # Path for the dynamically generated full config file
 CONFIG_FILE="/etc/telegraf/telegraf.conf"
