@@ -1,89 +1,81 @@
-#!/usr/bin/env bashio
-# set -euo pipefail # bashio handles error checking, but keeping good practice
+#!/usr/bin/env bash
+set -euo pipefail
 
 # Path for the dynamically generated full config file
 CONFIG_FILE="/etc/telegraf/telegraf.conf"
 
-bashio::log.info "Starting Telegraf configuration generation from HA UI options..."
+echo "[INFO] Starting Telegraf configuration generation..."
 
 # --- 1. SETUP ---
-# Create destination folder (if not already handled by Dockerfile/Add-on base image)
 mkdir -p /etc/telegraf
 
 # --- 2. GENERATE CORE CONFIG (Agent & Outputs) ---
-bashio::log.info "Generating [agent] and [[outputs]] sections..."
+echo "[INFO] Generating [agent] and [[outputs]] sections..."
 
-# Start writing the base configuration file
-if bashio::config.has_value agent; then
-    AGENT_CONFIG=$(bashio::config agent)
-    bashio::log.info "Appending custom Agent Config..."
-    cat >> "${CONFIG_FILE}" << EOF
-
+# Reset file (overwrite)
+cat > "${CONFIG_FILE}" <<EOF
 # ===============================
 #  Telegraf Configuration File
-#  (auto-generated from Add-on)
+#  (auto-generated)
 # ===============================
 
-# Agent Configuration (From HA UI)
+EOF
+
+# Agent config (optional, from ENV)
+if [[ -n "${AGENT_CONFIG:-}" ]]; then
+  echo "[INFO] Adding Agent config..."
+  cat >> "${CONFIG_FILE}" <<EOF
+# Agent Configuration
 ${AGENT_CONFIG}
+
 EOF
 fi
 
-# Outputs (Example: InfluxDB or PostgreSQL)
-if bashio::config.has_value 'output_plugins'; then
-    OUTPUT_PLUGINS=$(bashio::config 'output_plugins')
-    bashio::log.info "Appending custom Output Plugins..."
-    cat >> "${CONFIG_FILE}" << EOF
-
-# Output Plugins (From HA UI)
+# Outputs (e.g., InfluxDB, PostgreSQL)
+if [[ -n "${OUTPUT_PLUGINS:-}" ]]; then
+  echo "[INFO] Adding Output Plugins..."
+  cat >> "${CONFIG_FILE}" <<EOF
+# Output Plugins
 ${OUTPUT_PLUGINS}
+
 EOF
 fi
 
-# --- 3. APPEND COMPLEX PLUGIN CONFIGS ---
-# This is where we handle the raw input for plugins, assuming the user pasted valid TOML/YAML.
-
+# --- 3. APPEND INPUT / PROCESSOR PLUGINS ---
+if [[ -n "${INPUT_PLUGINS:-}" ]]; then
+  echo "[INFO] Adding Input Plugins..."
+  cat >> "${CONFIG_FILE}" <<EOF
 # Input Plugins
-if bashio::config.has_value 'input_plugins'; then
-    INPUT_PLUGINS=$(bashio::config 'input_plugins')
-    bashio::log.info "Appending custom Input Plugins..."
-    cat >> "${CONFIG_FILE}" << EOF
-
-# Input Plugins (From HA UI)
 ${INPUT_PLUGINS}
+
 EOF
 fi
 
+if [[ -n "${PROCESSOR_PLUGINS:-}" ]]; then
+  echo "[INFO] Adding Processor Plugins..."
+  cat >> "${CONFIG_FILE}" <<EOF
 # Processor Plugins
-if bashio::config.has_value 'processor_plugins'; then
-    PROCESSOR_PLUGINS=$(bashio::config 'processor_plugins')
-    bashio::log.info "Appending custom Processor Plugins..."
-    cat >> "${CONFIG_FILE}" << EOF
-
-# Processor Plugins (From HA UI)
 ${PROCESSOR_PLUGINS}
+
 EOF
 fi
-
 
 # --- 4. OVERWRITE CUSTOM PLUGIN CONFIG FILE IN VOLUME ---
-
-PLUGIN_CONFIG_FILE=$(bashio::config 'plugin_config_file')
+PLUGIN_CONFIG_FILE="${PLUGIN_CONFIG_FILE:-custom_telegraf.conf}"
 PLUGIN_CONFIG_PATH="/share/${PLUGIN_CONFIG_FILE}"
 
-bashio::log.info "Preparing to overwrite custom plugin file at: ${PLUGIN_CONFIG_PATH}"
+echo "[INFO] Preparing to overwrite plugin file at: ${PLUGIN_CONFIG_PATH}"
 
-if bashio::fs.file_exists "${PLUGIN_CONFIG_PATH}"; then
-    bashio::log.info "Existing custom plugin file found. It will be overwritten with the main config."
+if [[ -f "${PLUGIN_CONFIG_PATH}" ]]; then
+  echo "[INFO] Existing custom plugin file found. It will be overwritten."
 else
-    bashio::log.info "No existing custom plugin file found. A new one will be created."
+  echo "[INFO] No existing custom plugin file found. Creating new one."
 fi
 
-# Overwrite the file in the volume with the main config
-cat "${CONFIG_FILE}" > "${PLUGIN_CONFIG_PATH}"
+cp "${CONFIG_FILE}" "${PLUGIN_CONFIG_PATH}"
 
-bashio::log.info "Custom plugin file successfully overwritten at ${PLUGIN_CONFIG_PATH}"
+echo "[INFO] Custom plugin file successfully written to ${PLUGIN_CONFIG_PATH}"
 
-# --- 4. START TELEGRAF ---
-bashio::log.info "Generated Telegraf config saved to ${CONFIG_FILE}. Starting Telegraf..."
+# --- 5. START TELEGRAF ---
+echo "[INFO] Starting Telegraf with config: ${CONFIG_FILE}"
 exec telegraf --config "${CONFIG_FILE}"
