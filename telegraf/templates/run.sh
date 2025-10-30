@@ -1,7 +1,6 @@
 #!/bin/sh
 set -e
 
-# Path for the dynamically generated full config file
 CONFIG_FILE="/etc/telegraf/telegraf.conf"
 
 echo "[INFO] Starting Telegraf configuration generation..."
@@ -13,7 +12,7 @@ echo "[INFO] Starting Telegraf configuration generation..."
 # echo "[INFO] Generating [agent] and [[outputs]] sections..."
 
 # # Reset file (overwrite)
-# cat > "${CONFIG_FILE}" <<EOF
+# cat > "$CONFIG_FILE" <<EOF
 # # ===============================
 # #  Telegraf Configuration File
 # #  (auto-generated)
@@ -21,43 +20,27 @@ echo "[INFO] Starting Telegraf configuration generation..."
 
 # EOF
 
-# # Agent config (optional, from ENV)
-# if [[ -n "${AGENT_CONFIG:-}" ]]; then
+# # Agent config (optional)
+# if [ -n "${AGENT_CONFIG:-}" ]; then
 #   echo "[INFO] Adding Agent config..."
-#   cat >> "${CONFIG_FILE}" <<EOF
-# # Agent Configuration
-# ${AGENT_CONFIG}
-
-# EOF
+#   printf "%s\n\n" "# Agent Configuration" "$AGENT_CONFIG" >> "$CONFIG_FILE"
 # fi
 
-# # Outputs (e.g., InfluxDB, PostgreSQL)
-# if [[ -n "${OUTPUT_PLUGINS:-}" ]]; then
+# # Outputs
+# if [ -n "${OUTPUT_PLUGINS:-}" ]; then
 #   echo "[INFO] Adding Output Plugins..."
-#   cat >> "${CONFIG_FILE}" <<EOF
-# # Output Plugins
-# ${OUTPUT_PLUGINS}
-
-# EOF
+#   printf "%s\n\n" "# Output Plugins" "$OUTPUT_PLUGINS" >> "$CONFIG_FILE"
 # fi
 
 # # --- 3. APPEND INPUT / PROCESSOR PLUGINS ---
-# if [[ -n "${INPUT_PLUGINS:-}" ]]; then
+# if [ -n "${INPUT_PLUGINS:-}" ]; then
 #   echo "[INFO] Adding Input Plugins..."
-#   cat >> "${CONFIG_FILE}" <<EOF
-# # Input Plugins
-# ${INPUT_PLUGINS}
-
-# EOF
+#   printf "%s\n\n" "# Input Plugins" "$INPUT_PLUGINS" >> "$CONFIG_FILE"
 # fi
 
-# if [[ -n "${PROCESSOR_PLUGINS:-}" ]]; then
+# if [ -n "${PROCESSOR_PLUGINS:-}" ]; then
 #   echo "[INFO] Adding Processor Plugins..."
-#   cat >> "${CONFIG_FILE}" <<EOF
-# # Processor Plugins
-# ${PROCESSOR_PLUGINS}
-
-# EOF
+#   printf "%s\n\n" "# Processor Plugins" "$PROCESSOR_PLUGINS" >> "$CONFIG_FILE"
 # fi
 
 # # --- 4. OVERWRITE CUSTOM PLUGIN CONFIG FILE IN VOLUME ---
@@ -66,16 +49,16 @@ echo "[INFO] Starting Telegraf configuration generation..."
 
 # echo "[INFO] Preparing to overwrite plugin file at: ${PLUGIN_CONFIG_PATH}"
 
-# if [[ -f "${PLUGIN_CONFIG_PATH}" ]]; then
+# if [ -f "$PLUGIN_CONFIG_PATH" ]; then
 #   echo "[INFO] Existing custom plugin file found. It will be overwritten."
 # else
 #   echo "[INFO] No existing custom plugin file found. Creating new one."
 # fi
 
-# cp "${CONFIG_FILE}" "${PLUGIN_CONFIG_PATH}"
+# cp "$CONFIG_FILE" "$PLUGIN_CONFIG_PATH"
 
 # echo "[INFO] Custom plugin file successfully written to ${PLUGIN_CONFIG_PATH}"
 
 # --- 5. START TELEGRAF ---
 echo "[INFO] Starting Telegraf with config: ${CONFIG_FILE}"
-exec telegraf --config "${CONFIG_FILE}"
+exec telegraf --config "$CONFIG_FILE"
